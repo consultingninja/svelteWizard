@@ -27,7 +27,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
 	bind:this={dialog}
-	on:close={() => {showWizard.set(false); teams.set(defaultTeams)}}
+	on:close={() => {showWizard.set(false); teams.set(defaultTeams); currentStep = 1;}}
 	on:click|self={() => dialog.close()}
 >
 	<div on:click|stopPropagation>
@@ -65,8 +65,7 @@
 		border-radius: 0.2em;
 		border: none;
 		padding: .5em;
-		transition: all 0.2s ease-in;
-		transition: all 0.2s ease-out;
+		transition: all 0.2s ease-in-out;
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);

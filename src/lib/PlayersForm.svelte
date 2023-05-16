@@ -21,24 +21,21 @@
         Team.expanded = !Team.expanded;
         newTeams.splice(index,1,Team);
         teams.set(newTeams);
-        //console.log(index);
-        //console.log(newTeams[index].expanded)
     
     }
 
     async function submitForm(){
-        await fetch('?/submitMultiForm',{method:"post",body:JSON.stringify($teams)})
+        await fetch('?/submitMultiForm',{method:"post",body:JSON.stringify($teams)});
+        showWizard.set(false);
     }
-    
-    const runSub = async()=> { await submitForm(); showWizard.set(false);}
     
     </script>
     
     
-    <form method="post" on:submit|preventDefault={runSub}>
+    <form method="post" on:submit|preventDefault={submitForm}>
         <div class="item-wrap">
             <label for="addTeam">Add Team</label>
-            <button name="addTeam" type="button" on:click={addTeam}><span class="material-symbols-outlined">
+            <button id="addTeam" name="addTeam" type="button" on:click={addTeam}><span class="material-symbols-outlined">
                 add
                 </span></button>
         </div>
@@ -46,19 +43,18 @@
         {#each $teams as team, teamsIndex}
     
             <label for="teamName">Team Name:</label>
-            <input name="teamName" required type="text" bind:value={$teams[teamsIndex].name}/>
-            <input name="numTeams" type="hidden"/>
+            <input id="teamName" name="teamName" required type="text" bind:value={$teams[teamsIndex].name}/>
             <div class="item-wrap">
                 <label for="addPlayer">Add Player</label>
-                <button name="addPlayer" type="button" on:click={()=> addPlayer(teamsIndex)}><span class="material-symbols-outlined">
+                <button id="addPlayer" name="addPlayer" type="button" on:click={()=> addPlayer(teamsIndex)}><span class="material-symbols-outlined">
                     add
                     </span></button>
                     {#if !team.expanded}
-                    <button name="expandTeam" type="button" on:click={()=> toggleExpand(teamsIndex)}><span class="material-symbols-outlined">
+                    <button id="expandTeam" name="expandTeam" type="button" on:click={()=> toggleExpand(teamsIndex)}><span class="material-symbols-outlined">
                         expand_more
                         </span></button>
                     {:else}
-                    <button name="expandTeam" type="button" on:click={()=> toggleExpand(teamsIndex)}><span class="material-symbols-outlined">
+                    <button id="collapseTeam" name="collapseTeam" type="button" on:click={()=> toggleExpand(teamsIndex)}><span class="material-symbols-outlined">
                         expand_less
                         </span></button>
                     {/if}
@@ -67,23 +63,22 @@
     
             {#if team.expanded}
             {#each team.players as player, playerIndex}
-            <input type="hidden" name="numPlayers"/>
             <div class="player-wrapper">
                 <div class="player-item">
                     <label for="playerName">Player Name:</label>
-                    <input bind:value={$teams[teamsIndex].players[playerIndex].name} name="playerName" type="text"/>
+                    <input id="playerName" bind:value={$teams[teamsIndex].players[playerIndex].name} name="playerName" type="text"/>
                 </div>
                 <div class="player-item">
                     <label for="playerAge">Player Age:</label>
-                    <input bind:value={$teams[teamsIndex].players[playerIndex].age} name="playerAge" type="number"/>
+                    <input id="playerAge" bind:value={$teams[teamsIndex].players[playerIndex].age} name="playerAge" type="number"/>
                 </div>
                 <div class="player-item">
                     <label for="playerPosition">Player Position:</label>
-                    <input bind:value={$teams[teamsIndex].players[playerIndex].position} name="playerPosition" type="text"/>
+                    <input id="playerPosition" bind:value={$teams[teamsIndex].players[playerIndex].position} name="playerPosition" type="text"/>
                 </div>
                 <div class="player-item">
                     <label for="playerJersey">Jersey:</label>
-                    <input bind:value={$teams[teamsIndex].players[playerIndex].jersey} name="playerJersey" type="number"/>
+                    <input id="playerJersey" bind:value={$teams[teamsIndex].players[playerIndex].jersey} name="playerJersey" type="number"/>
                 </div>
     
             </div>
@@ -92,13 +87,6 @@
             <p>No Players on Team</p>
             {/if}
             {:else}
-            {#each team.players as player, playerIndex}
-            <input type="hidden" name="numPlayers"/>
-            <input bind:value={$teams[teamsIndex].players[playerIndex].name} name="playerName" type="hidden"/>
-            <input bind:value={$teams[teamsIndex].players[playerIndex].age} name="playerAge" type="hidden"/>
-            <input bind:value={$teams[teamsIndex].players[playerIndex].position} name="playerPosition" type="hidden"/>
-            <input bind:value={$teams[teamsIndex].players[playerIndex].jersey} name="playerJersey" type="hidden"/>
-            {/each}
             <p>Expand to see players</p>
             {/if}
         {/each}

@@ -15,14 +15,14 @@ function addTeam(){
 <form>
     <div class="item-wrap">
         <label for="addTeam">Add Team</label>
-        <button name="addTeam" type="button" on:click={addTeam}><span class="material-symbols-outlined">
+        <button id="addTeam" name="addTeam" type="button" on:click={addTeam}><span class="material-symbols-outlined">
             add
             </span></button>
     </div>
 
     {#each $teams as team, teamsIndex}
         <label for="teamName">Team Name:</label>
-        <input required name="teamName" type="text" bind:value={$teams[teamsIndex].name}/>
+        <input id="teamName" required name="teamName" type="text" bind:value={$teams[teamsIndex].name}/>
     {/each}
 
 </form>
